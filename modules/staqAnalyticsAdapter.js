@@ -103,8 +103,8 @@ staqAdapter.sendTypedEvent = function() {
   const groupedTypedEvents = adomik.buildTypedEvents();
 
   const bulkEvents = {
-    uid: adomikAdapter.currentContext.uid,
-    ahbaid: adomikAdapter.currentContext.id,
+    uid: staqAdapter.currentContext.uid,
+    ahbaid: staqAdapter.currentContext.id,
     hostname: window.location.hostname,
     eventsByPlacementCode: groupedTypedEvents.map(function(typedEventsByType) {
       let sizes = [];
@@ -116,7 +116,7 @@ staqAdapter.sendTypedEvent = function() {
         if (typedEventsByType[eventKey] !== undefined) {
           typedEventsByType[eventKey].forEach((typedEvent) => {
             if (typedEvent.event.size !== undefined) {
-              const size = adomikAdapter.sizeUtils.handleSize(sizes, typedEvent.event.size);
+              const size = staqAdapter.sizeUtils.handleSize(sizes, typedEvent.event.size);
               if (size !== null) {
                 sizes = [...sizes, size];
               }
