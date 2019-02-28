@@ -71,6 +71,25 @@ staqAdapter.buildResponse = function (bidArgs) {
   }
 }
 
+staqAdapter.sizeUtils = {
+  sizeAlreadyExists: (sizes, typedEventSize) => {
+    return find(sizes, (size) => size.height === typedEventSize.height && size.width === typedEventSize.width);
+  },
+  formatSize: (typedEventSize) => {
+    return {
+      width: Number(typedEventSize.width),
+      height: Number(typedEventSize.height)
+    };
+  },
+  handleSize: (sizes, typedEventSize) => {
+    let formattedSize = null;
+    if (staqAdapter.sizeUtils.sizeAlreadyExists(sizes, typedEventSize) === undefined) {
+      formattedSize = staqAdapter.sizeUtils.formatSize(typedEventSize);
+    }
+    return formattedSize;
+  }
+};
+
 staqAdapter.sendWonEvent = function (wonEvent) {
   const stringWonEvent = JSON.stringify(wonEvent);
   logInfo('Won event sent to STAQ' + wonEvent);
@@ -145,9 +164,9 @@ staqAdapter.sendTypedEvent = function() {
   const splittedUrl = encodedUri.match(/.{1,1600}/g);
 
   splittedUrl.forEach((split, i) => {
-    const partUrl = `${split}&id=${adomikAdapter.currentContext.id}&part=${i}&on=${splittedUrl.length - 1}`;
+    const partUrl = `${split}&id=${staqAdapter.currentContext.id}&part=${i}&on=${splittedUrl.length - 1}`;
     const img = new Image(1, 1);
-    img.src = 'https://' + adomikAdapter.currentContext.url + '/?q=' + partUrl;
+    img.src = 'https://' + staqAdapter.currentContext.url + '/?q=' + partUrl;
   })
 }
 
